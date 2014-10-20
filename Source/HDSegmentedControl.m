@@ -75,15 +75,15 @@
     return self;
 }
 
-//- (instancetype)initWithCoder:(NSCoder *)coder
-//{
-//    self = [super initWithCoder:coder];
-//    if (self)
-//    {
-//        [self commonInit];
-//    }
-//    return self;
-//}
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self)
+    {
+        [self commonInit];
+    }
+    return self;
+}
 
 - (id)initWithItems:(NSArray *)items
 {
@@ -187,27 +187,31 @@
         posX += CGRectGetWidth(item.bounds);
     }];
 
-    UIView *selectedItem = _items[_selectedSegmentIndex];
-    CGRect selectedFrame = selectedItem.frame;
-    _selectedView.layer.cornerRadius = CGRectGetHeight(selectedFrame) / 2;
-    BOOL animated = !_selectedView.hidden && !CGRectEqualToRect(_selectedView.frame, CGRectZero);
-    [UIView setAnimationsEnabled:animated];
-    [UIView animateWithDuration:animated ? 0.3 : 0
-        animations:^{ _selectedView.frame = selectedFrame; }
-        completion:^(BOOL finished) {
-            for (UILabel *itemLabel in _items)
-            {
-                if (itemLabel == selectedItem)
+    if (_items.count > 0)
+    {
+        UIView *selectedItem = _items[_selectedSegmentIndex];
+        CGRect selectedFrame = selectedItem.frame;
+        _selectedView.layer.cornerRadius = CGRectGetHeight(selectedFrame) / 2;
+        BOOL animated =
+            !_selectedView.hidden && !CGRectEqualToRect(_selectedView.frame, CGRectZero);
+        [UIView setAnimationsEnabled:animated];
+        [UIView animateWithDuration:animated ? 0.3 : 0
+            animations:^{ _selectedView.frame = selectedFrame; }
+            completion:^(BOOL finished) {
+                for (UILabel *itemLabel in _items)
                 {
-                    itemLabel.textColor = self.normalColor;
+                    if (itemLabel == selectedItem)
+                    {
+                        itemLabel.textColor = self.normalColor;
+                    }
+                    else
+                    {
+                        itemLabel.textColor = self.highlightedColor;
+                    }
                 }
-                else
-                {
-                    itemLabel.textColor = self.highlightedColor;
-                }
-            }
-        }];
-    [UIView setAnimationsEnabled:YES];
+            }];
+        [UIView setAnimationsEnabled:YES];
+    }
 }
 
 #pragma mark
