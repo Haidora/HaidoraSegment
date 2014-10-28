@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@import QuartzCore.QuartzCore;
+//@import QuartzCore.QuartzCore;
 
 @interface HDSegmentedControl : UISegmentedControl
 
